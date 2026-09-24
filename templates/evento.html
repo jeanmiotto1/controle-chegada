@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>{{ evento[1] }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #222;
+
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 6px 0;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .data-evento {
+            margin-top: 0;
+            color: #666;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        /* RESUMO */
+
+        .resumo-evento {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .contador {
+            flex: 1;
+            padding: 14px 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .contador span {
+            display: block;
+            font-size: 13px;
+        }
+
+        .contador strong {
+            display: block;
+            font-size: 28px;
+            margin-top: 4px;
+        }
+
+        .contador.aguardando {
+            background-color: #fff3cd;
+        }
+
+        .contador.chegaram {
+            background-color: #d1e7dd;
+        }
+
+        /* PESQUISA */
+
+        .barra-pesquisa {
+            margin: 20px 0 12px 0;
+        }
+
+        #campoPesquisa {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            outline: none;
+            background-color: white;
+        }
+
+        #campoPesquisa:focus {
+            border-color: #777;
+        }
+
+        /* FILTRO DE MESA */
+
+        .filtro-mesa {
+            margin-bottom: 22px;
+        }
+
+        .filtro-mesa label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #filtroMesa {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        /* TÍTULOS DAS SEÇÕES */
+
+        .titulo-aguardando,
+
+        .titulo-chegaram {
+            margin: 24px 0 12px 0;
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 18px;
+        }
+
+        .titulo-aguardando {
+            background-color: #fff3cd;
+        }
+
+        .titulo-chegaram {
+            background-color: #d1e7dd;
+        }
+
+        /* CARD DO CONVIDADO */
+
+        .convidado {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: white;
+        }
+
+        .linha-convidado {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .nome {
+            flex: 1;
+            min-width: 0;
+            font-size: 16px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .mesa {
+            flex: 0 0 auto;
+            min-width: 58px;
+            padding: 8px 9px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        .mesa span {
+            display: block;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            color: #666;
+        }
+
+        .mesa strong {
+            display: block;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        /* BOTÕES */
+
+        .convidado a {
+            text-decoration: none;
+        }
+
+        .btn-confirmar,
+        .btn-desmarcar {
+            flex: 0 0 auto;
+            min-height: 42px;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .btn-confirmar {
+            background-color: #198754;
+            color: white;
+        }
+
+        .btn-desmarcar {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-excluir {
+            flex: 0 0 40px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background-color: #f8d7da;
+            color: #842029;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        /* HORÁRIO */
+
+        .horario-chegada {
+            margin: 8px 0 0 4px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* LINK IMPORTAR */
+
+        .area-importacao {
+            margin: 25px 0 10px 0;
+            text-align: center;
+        }
+
+        .area-importacao a {
+            display: inline-block;
+            padding: 12px 16px;
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* CELULARES PEQUENOS */
+
+        @media (max-width: 400px) {
+            body {
+                padding: 12px;
+            }
+
+            h1 {
+
+                font-size: 22px;
+            }
+
+            .contador {
+                padding: 12px 8px;
+            }
+
+            .contador strong {
+                font-size: 25px;
+            }
+
+            .informacoes-convidado {
+                gap: 8px;
+            }
+
+            .mesa {
+                min-width: 72px;
+                padding: 8px;
+            }
+
+            .grupo {
+                padding: 8px 10px;
+            }
+
+            .grupo strong {
+                font-size: 14px;
+            }
+        }
+
+        /* ADICIONAR MANUAL CONVIDADO */
+
+            .btn-adicionar {
+                width: 100%;
+                min-height: 46px;
+                padding: 11px 16px;
+                margin-bottom: 16px;
+                border: 1px solid #198754;
+                border-radius: 9px;
+                background-color: white;
+                color: #198754;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .formulario-adicionar {
+                display: none;
+                margin-bottom: 20px;
+                padding: 16px;
+                border-radius: 10px;
+                background-color: white;
+                border: 1px solid #ddd;
+            }
+
+            .formulario-adicionar h3 {
+                margin: 0 0 16px 0;
+                font-size: 19px;
+                text-align: center;
+            }
+
+            .campo-adicionar {
+                margin-bottom: 14px;
+            }
+
+            .campo-adicionar label {
+                display: block;
+                margin-bottom: 6px;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .campo-adicionar input {
+                width: 100%;
+                padding: 13px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                outline: none;
+            }
+
+            .campo-adicionar input:focus {
+                border-color: #777;
+            }
+
+            .btn-salvar-convidado {
+                width: 100%;
+                min-height: 48px;
+                padding: 12px;
+                border: none;
+                border-radius: 9px;
+                background-color: #198754;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .btn-cancelar {
+                width: 100%;
+                margin-top: 8px;
+                padding: 10px;
+                border: none;
+                background-color: transparent;
+                color: #666;
+                font-size: 15px;
+                cursor: pointer;
+            }
+
+            .btn-excluir {
+                flex: 0 0 42px;
+                width: 42px;
+                min-width: 42px;
+                align-self: stretch;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                background-color: #f8d7da;
+                color: #842029;
+                text-decoration: none;
+                font-size: 18px;
+            }
+
+            .mensagem-sucesso {
+                margin: 16px 0;
+                padding: 12px 14px;
+                border-radius: 9px;
+                background-color: #d1e7dd;
+                color: #0f5132;
+                text-align: center;
+                font-size: 15px;
+                font-weight: bold;
+            }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>{{ evento[1] }}</h1>
+    <p class="data-evento">
+        {{ data_formatada }}
+    </p>
+    {% if mensagem == "adicionado" %}
+    <div class="mensagem-sucesso" id="mensagemSucesso">
+        ✓ Convidado adicionado com sucesso!
+    </div>
+    {% endif %}
+    {% if mensagem == "excluido" %}
+    <div class="mensagem-sucesso" id="mensagemSucesso">
+        ✓ Convidado excluído com sucesso!
+    </div>
+    {% endif %}
+
+    <!-- RESUMO -->
+
+    <div class="resumo-evento">
+        <div class="contador aguardando">
+            <span>Aguardando</span>
+            <strong>{{ nao_chegaram|length }}</strong>
+        </div>
+        <div class="contador chegaram">
+            <span>Já chegaram</span>
+            <strong>{{ ja_chegaram|length }}</strong>
+       </div>
+    </div>
+
+    <!-- PESQUISA -->
+
+    <div class="barra-pesquisa">
+        <input
+            type="text"
+            id="campoPesquisa"
+            placeholder="🔍 Pesquisar convidado..."
+            onkeyup="filtrarConvidados()"
+        >
+    </div>
+
+    <!-- FILTRO DE MESA -->
+
+    <div class="filtro-mesa">
+        <label for="filtroMesa">
+            Filtrar por mesa
+        </label>
+        <select
+            id="filtroMesa"
+            onchange="filtrarConvidados()"
+        >
+            <option value="">
+                Todas
+            </option>
+        </select>
+    </div>
+
+
+    <!-- ADICIONAR MANUAL -->
+
+    <button
+        type="button"
+        class="btn-adicionar"
+        onclick="mostrarFormulario()"
+    >
+        + Adicionar convidado
+    </button>
+    <div
+        id="formulario-adicionar"
+        class="formulario-adicionar"
+    >
+        <h3>Adicionar convidado</h3>
+        {% if not evento_passado %}
+        <form
+            method="POST"
+            action="/evento/{{ evento[0] }}/adicionar-convidado"
+        >
+            <div class="campo-adicionar">
+                <label for="nome">
+                    Nome
+                </label>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Nome completo" required
+                >
+            </div>
+            <div class="campo-adicionar">
+                <label for="mesa">
+                    Mesa
+                </label>
+                <input
+                    type="text"
+                    id="mesa"
+                    name="mesa"
+                    placeholder="Ex.: 12" required
+                >
+            </div>
+            <button
+                type="submit"
+                class="btn-salvar-convidado"
+            >
+                Adicionar convidado
+            </button>
+        </form>
+        {% endif %}
+        <button
+            type="button"
+            class="btn-cancelar"
+            onclick="ocultarFormulario()"
+        >
+            Cancelar
+        </button>
+    </div>
+
+    <!-- AGUARDANDO -->
+
+    <h2 class="titulo-aguardando">
+        Aguardando a chegada
+    </h2>
+    {% for convidado in nao_chegaram %}
+    <div
+        class="convidado"
+        data-mesa="{{ convidado[2] }}"
+    >
+        <div class="linha-convidado">
+            {% if not evento_passado %}
+            <a href="/confirmar-chegada/{{ convidado[0] }}">
+                <button class="btn-confirmar">
+                    ✓ Confirmar
+                </button>
+            </a>
+            {% endif %}
+            <strong class="nome">
+                {{ convidado[1] }}
+            </strong>
+            <div class="mesa">
+                <span>Mesa</span>
+                <strong>{{ convidado[2] }}</strong>
+            </div>
+            {% if not evento_passado %}
+            <a
+                href="{{ url_for('excluir_convidado_rota', id_convidado=convidado[0]) }}"
+                class="btn-excluir"
+                onclick="return confirm('Deseja realmente excluir esse convidado?')"
+                title="Excluir convidado"
+            >🗑</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- JÁ CHEGARAM -->
+
+    <h2 class="titulo-chegaram">
+        Já chegaram
+    </h2>
+    {% for convidado in ja_chegaram %}
+        <div
+            class="convidado"
+            data-mesa="{{ convidado[2] }}"
+        >
+            <div class="linha-convidado">
+                {% if not evento_passado %}
+                <a href="/desmarcar-chegada/{{ convidado[0] }}">
+                    <button class="btn-desmarcar">
+                        ↩ Desmarcar
+                    </button>
+                </a>
+                {% endif %}
+                <strong class="nome">
+                    {{ convidado[1] }}
+                </strong>
+                <div class="mesa">
+                    <span>Mesa</span>
+                    <strong>{{ convidado[2] }}</strong>
+                </div>
+            </div>
+
+            <p class="horario-chegada">
+                Chegou às: {{ convidado[5] }}
+            </p>
+
+        </div>
+    {% endfor %}
+
+    <!-- IMPORTAÇÃO -->
+
+    {% if not tem_convidados and not evento_passado %}
+    <div class="area-importacao">
+        <a href="/evento/{{ evento[0] }}/upload">
+            Importar lista de convidados
+        </a>
+    </div>
+    {% endif %}
+    {% if tem_convidados %}
+    <div class="area-importacao">
+        <a href="/historico/{{ evento[0] }}/relatorio" class="btn">
+        📥 Baixar relatório
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- JAVASCRIPT -->
+
+<script>
+    function filtrarConvidados() {
+        const pesquisa = document
+            .getElementById("campoPesquisa")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const mesaSelecionada = String(
+            document
+                .getElementById("filtroMesa")
+                .value
+        ).trim();
+
+        const convidados =
+            document.querySelectorAll(".convidado");
+        convidados.forEach(function(convidado) {
+            const nome = convidado
+                .querySelector(".nome")
+                .textContent
+                .toLowerCase()
+                .trim();
+
+            const mesa = String(
+                convidado.dataset.mesa
+            ).trim();
+
+            const encontrouNome =
+                nome.includes(pesquisa);
+
+            const encontrouMesa =
+                mesaSelecionada === "" ||
+                mesa === mesaSelecionada;
+            if (encontrouNome && encontrouMesa) {
+                convidado.style.display = "";
+            } else {
+                convidado.style.display = "none";
+            }
+        });
+    }
+
+    /* CRIA AS OPÇÕES DE MESA */
+
+    const mesas = new Set();
+    document
+        .querySelectorAll(".convidado")
+        .forEach(function(convidado) {
+            const mesa = String(
+                convidado.dataset.mesa
+            ).trim();
+            if (mesa) {
+                mesas.add(mesa);
+            }
+        });
+
+    const filtroMesa =
+        document.getElementById("filtroMesa");
+    mesas.forEach(function(mesa) {
+        const opcao =
+            document.createElement("option");
+        opcao.value = mesa;
+        opcao.textContent =
+            "Mesa " + mesa;
+
+        filtroMesa.appendChild(opcao);
+    });
+
+    /* MOSTRA FORMULARIO PARA ADICIONAR CONVIDADO MANUAL */
+
+    function mostrarFormulario() {
+        document.getElementById(
+            "formulario-adicionar"
+        ).style.display = "block";
+        document.getElementById(
+            "nome"
+        ).focus();
+    }
+
+    function ocultarFormulario() {
+        document.getElementById(
+            "formulario-adicionar"
+        ).style.display = "none";
+    }
+
+    const mensagemSucesso = document.getElementById("mensagemSucesso");
+    if (mensagemSucesso) {
+        setTimeout(function() {
+            mensagemSucesso.style.display = "none";
+        }, 3000);
+    }
+
+</script>
+</body>
+</html>

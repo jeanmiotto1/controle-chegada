@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+
+
+    <meta
+
+        name="viewport"
+
+        content="width=device-width, initial-scale=1.0"
+
+    >
+
+
+
+    <title>Novo Evento</title>
+
+
+
+    <style>
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        body {
+
+            margin: 0;
+
+            padding: 16px;
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f5f5f5;
+
+            color: #222;
+
+        }
+
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            margin: 40px auto;
+
+        }
+
+
+
+        .cabecalho {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        .cabecalho h1 {
+
+            margin: 0 0 8px 0;
+
+            font-size: 26px;
+
+        }
+
+
+
+        .cabecalho p {
+
+            margin: 0;
+
+            color: #666;
+
+            font-size: 15px;
+
+        }
+
+
+
+        .card {
+
+            background-color: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            border: 1px solid #ddd;
+
+        }
+
+
+
+        .campo {
+
+            margin-bottom: 18px;
+
+        }
+
+
+
+        .campo label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+
+        .campo input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            font-size: 16px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background-color: white;
+
+        }
+
+
+
+        .campo input:focus {
+
+            border-color: #777;
+
+        }
+
+
+
+        .btn-criar {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding: 12px 16px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background-color: #198754;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .btn-criar:hover {
+
+            background-color: #157347;
+
+        }
+
+
+
+        .voltar {
+
+            display: block;
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            color: #555;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+        }
+
+
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="container">
+
+
+
+    <div class="cabecalho">
+
+
+
+        <h1>Novo Evento</h1>
+
+
+
+        <p>
+
+            Cadastre um novo evento para iniciar o controle de chegada.
+
+        </p>
+
+
+
+    </div>
+
+
+
+
+
+    <div class="card">
+
+
+
+        <form method="POST">
+
+
+
+            <div class="campo">
+
+
+
+                <label for="nome_evento">
+
+                    Nome do evento
+
+                </label>
+
+
+
+                <input
+
+                    type="text"
+
+                    id="nome_evento"
+
+                    name="nome_evento"
+
+                    placeholder="Ex.: Casamento Jean e Maria"
+
+                    required
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <div class="campo">
+
+
+
+                <label for="data_evento">
+
+                    Data do evento
+
+                </label>
+
+
+
+                <input
+
+                    type="date"
+
+                    id="data_evento"
+
+                    name="data_evento"
+
+                    required
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                type="submit"
+
+                class="btn-criar"
+
+            >
+
+                Criar evento
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+
+
+    <a
+
+        href="/"
+
+        class="voltar"
+
+    >
+
+        ← Voltar para eventos
+
+    </a>
+
+
+
+</div>
+
+
+
+</body>
+
+</html>

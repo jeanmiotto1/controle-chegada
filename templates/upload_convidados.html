@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+
+
+    <meta
+
+        name="viewport"
+
+        content="width=device-width, initial-scale=1.0"
+
+    >
+
+
+
+    <title>Importar convidados</title>
+
+
+
+    <style>
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        body {
+
+            margin: 0;
+
+            padding: 16px;
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f5f5f5;
+
+            color: #222;
+
+        }
+
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            margin: 40px auto;
+
+        }
+
+
+
+        .cabecalho {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        .cabecalho h1 {
+
+            margin: 0 0 8px 0;
+
+            font-size: 26px;
+
+        }
+
+
+
+        .cabecalho p {
+
+            margin: 5px 0;
+
+            color: #666;
+
+            font-size: 15px;
+
+        }
+
+
+
+        .card {
+
+            background-color: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            border: 1px solid #ddd;
+
+        }
+
+
+
+        .informacao-evento {
+
+            padding: 14px;
+
+            margin-bottom: 20px;
+
+            border-radius: 9px;
+
+            background-color: #f5f5f5;
+
+            text-align: center;
+
+        }
+
+
+
+        .informacao-evento strong {
+
+            display: block;
+
+            font-size: 18px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+
+        .informacao-evento span {
+
+            color: #666;
+
+            font-size: 14px;
+
+        }
+
+
+
+        .campo {
+
+            margin-bottom: 18px;
+
+        }
+
+
+
+        .campo label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+        }
+
+
+
+        .campo input[type="file"] {
+
+            width: 100%;
+
+            padding: 12px;
+
+            font-size: 15px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            background-color: white;
+
+        }
+
+
+
+        .btn-importar {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            padding: 12px 16px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background-color: #198754;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .btn-importar:hover {
+
+            background-color: #157347;
+
+        }
+
+
+
+        .voltar {
+
+            display: block;
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            color: #555;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+        }
+
+
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="container">
+
+
+
+    <div class="cabecalho">
+
+
+
+        <h1>Importar convidados</h1>
+
+
+
+        <p>
+
+            Adicione a lista de convidados do evento.
+
+        </p>
+
+
+
+    </div>
+
+
+
+
+
+    <div class="card">
+
+
+
+        <div class="informacao-evento">
+
+
+
+            <strong>
+
+                {{ evento[1] }}
+
+            </strong>
+
+
+
+            <span>
+
+                Data: {{ evento[2] }}
+
+            </span>
+
+
+
+        </div>
+
+
+
+
+
+        <form
+
+            method="POST"
+
+            enctype="multipart/form-data"
+
+        >
+
+
+
+            <div class="campo">
+
+
+
+                <label for="arquivo">
+
+                    Arquivo Excel
+
+                </label>
+
+
+
+                <input
+
+                    type="file"
+
+                    id="arquivo"
+
+                    name="arquivo"
+
+                    accept=".xlsx"
+
+                    required
+
+                >
+
+
+
+            </div>
+
+
+
+
+
+            <button
+
+                type="submit"
+
+                class="btn-importar"
+
+            >
+
+                Importar lista
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+
+
+    <a
+
+        href="/evento/{{ evento[0] }}"
+
+        class="voltar"
+
+    >
+
+        ← Voltar para o evento
+
+    </a>
+
+
+
+</div>
+
+
+
+</body>
+
+</html>
