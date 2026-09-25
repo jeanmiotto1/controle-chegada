@@ -91,32 +91,82 @@ def excluir_evento(id_evento):
     conexao = conectar()
     cursor = conexao.cursor()
 
-    cursor.execute('''
-        DELETE FROM eventos
-        WHERE id = %s
-    ''', (id_evento,))
+    try:
+        cursor.execute('''
+            DELETE FROM convidados
+            WHERE evento_id = %s
+        ''', (id_evento,))
 
-    conexao.commit()
-    conexao.close()
+        cursor.execute('''
+            DELETE FROM eventos
+            WHERE id = %s
+        ''', (id_evento,))
+
+        conexao.commit()
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
 
 
 def adicionar_convidado(evento_id, nome, mesa):
     conexao = conectar()
     cursor = conexao.cursor()
 
-    cursor.execute('''
-        INSERT INTO convidados (
-            evento_id,
-            nome,
-            mesa,
-            grupo_familiar,
-            chegou
-        )
-        VALUES (%s, %s, %s, %s, %s)
-    ''', (evento_id, nome, mesa, '', 0))
+    try:
+        cursor.execute('''
+            INSERT INTO convidados (
+                evento_id,
+                nome,
+                mesa,
+                grupo_familiar,
+                chegou
+            )
+            VALUES (%s, %s, %s, %s, %s)
+        ''', (evento_id, nome, mesa, '', 0))
 
-    conexao.commit()
-    conexao.close()
+        conexao.commit()
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
+
+
+def importar_convidados(evento_id, convidados):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    try:
+        dados = [
+            (evento_id, nome, mesa, '', 0)
+            for nome, mesa in convidados
+        ]
+
+        cursor.executemany('''
+            INSERT INTO convidados (
+                evento_id,
+                nome,
+                mesa,
+                grupo_familiar,
+                chegou
+            )
+            VALUES (%s, %s, %s, %s, %s)
+        ''', dados)
+
+        conexao.commit()
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
 
 
 def listar_convidados(evento_id):
@@ -157,44 +207,65 @@ def confirmar_chegada(id_convidado):
     conexao = conectar()
     cursor = conexao.cursor()
 
-    cursor.execute('''
-        UPDATE convidados
-        SET chegou = 1,
-            data_hora_chegada =
-                CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo'
-        WHERE id = %s
-    ''', (id_convidado,))
+    try:
+        cursor.execute('''
+            UPDATE convidados
+            SET chegou = 1,
+                data_hora_chegada =
+                    CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo'
+            WHERE id = %s
+        ''', (id_convidado,))
 
-    conexao.commit()
-    conexao.close()
+        conexao.commit()
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
 
 
 def desmarcar_chegada(id_convidado):
     conexao = conectar()
     cursor = conexao.cursor()
 
-    cursor.execute('''
-        UPDATE convidados
-        SET chegou = 0,
-            data_hora_chegada = NULL
-        WHERE id = %s
-    ''', (id_convidado,))
+    try:
+        cursor.execute('''
+            UPDATE convidados
+            SET chegou = 0,
+                data_hora_chegada = NULL
+            WHERE id = %s
+        ''', (id_convidado,))
 
-    conexao.commit()
-    conexao.close()
+        conexao.commit()
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
 
 
 def excluir_convidado(id_convidado):
     conexao = conectar()
     cursor = conexao.cursor()
 
-    cursor.execute('''
-        DELETE FROM convidados
-        WHERE id = %s
-    ''', (id_convidado,))
+    try:
+        cursor.execute('''
+            DELETE FROM convidados
+            WHERE id = %s
+        ''', (id_convidado,))
 
-    conexao.commit()
-    conexao.close()
+        conexao.commit()
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
 
 
 def evento_tem_convidados(id_evento):
